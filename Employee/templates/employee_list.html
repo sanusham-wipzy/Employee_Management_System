@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="container-fluid px-3 px-md-4 mt-4">
+    
+    <div class="row align-items-center g-3 mb-3">
+
+        <div class="col-12 d-flex flex-wrap justify-content-md-end gap-2 ">
+            <a class="btn btn-primary" href="{% url 'add_employee' %}">
+                Add Employee
+            </a>
+
+            <a class="btn btn-primary" href="{% url 'add_designation' %}">
+                Add Designation
+            </a>
+        </div>
+
+    </div>
+
+    <div class="cointainer m-4">
+        <div class="row g-3 mb-4">
+
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="card border-0 shadow rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-secondary small fw-semibold mb-2">
+                                    Total Employees
+                                </p>
+                                <h2 class="fw-bold text-dark mb-2">
+                                    {{ total_employees }}
+                                </h2>
+                                <span class="badge bg-primary-subtle text-primary rounded-pill">
+                                    Employee Records
+                                </span>
+                            </div>
+
+                            <div class="bg-primary bg-opacity-10 text-primary rounded-4 p-3">
+                                <i class="bi bi-people-fill fs-3"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="card border-0 shadow rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-secondary small fw-semibold mb-2">
+                                    Total Designations
+                                </p>
+                                <h2 class="fw-bold text-dark mb-2">
+                                    {{ total_designations }}
+                                </h2>
+                                <span class="badge bg-info-subtle text-info rounded-pill">
+                                    Available Roles
+                                </span>
+                            </div>
+
+                            <div class="bg-info bg-opacity-10 text-info rounded-4 p-3">
+                                <i class="bi bi-person-badge-fill fs-3"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="card border-0 shadow rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="overflow-hidden">
+                                <p class="text-secondary small fw-semibold mb-2">
+                                    Most Employees
+                                </p>
+
+                                {% if most_employees and most_employees.employee_count > 0 %}
+                                    <h5 class="fw-bold text-dark mb-2 text-truncate">
+                                        {{ most_employees.name }}
+                                    </h5>
+                                    <span class="badge bg-success-subtle text-success rounded-pill">
+                                        {{ most_employees.employee_count }} Employees
+                                    </span>
+                                {% else %}
+                                    <p class="text-muted mb-0">No employees yet</p>
+                                {% endif %}
+                            </div>
+
+                            <div class="bg-success bg-opacity-10 text-success rounded-4 p-3">
+                                <i class="bi bi-graph-up-arrow fs-3"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Least Employees -->
+            <div class="col-12 col-sm-6 col-xl-3">
+                <div class="card border-0 shadow rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="overflow-hidden">
+                                <p class="text-secondary small fw-semibold mb-2">
+                                    Least Employees
+                                </p>
+
+                                {% if least_employee and least_employee.employee_count >= 0 %}
+                                    <h5 class="fw-bold text-dark mb-2 text-truncate">
+                                        {{ least_employee.name }}
+                                    </h5>
+                                    <span class="badge bg-warning-subtle text-warning-emphasis rounded-pill">
+                                        {{ least_employee.employee_count }} Employees
+                                    </span>
+                                {% else %}
+                                    <p class="text-muted mb-0">No employees yet</p>
+                                {% endif %}
+                            </div>
+
+                            <div class="bg-warning bg-opacity-10 text-warning-emphasis rounded-4 p-3">
+                                <i class="bi bi-bar-chart-fill fs-3"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row g-0">
+            <div class="col-12 col-lg-9 ">
+                <h4 class="align-start">Employee Lists</h4>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle mb-0 shadow" style="width: 90%; ">
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Designation</th>
+                            <th scope="col">Salary</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Password</th>
+                            <th class="col">Actions</th>
+                        </tr>
+                    
+                        {% for employee in employees %}
+                        <tr>
+                            <td>{{employee.name}}</td>
+                            <td>{{employee.email}}</td>
+                            <td>{{employee.phone}}</td>
+                            <td>{{employee.designation}}</td>
+                            <td>{{employee.salary}}</td>
+                            <td>{{employee.user_name}}</td>
+                            <td>{{employee.password}}</td>
+                            <td>
+                                <div class="d-flex flex-wrap gap-1">
+                                    <a class="btn btn-primary btn-sm" href="{% url 'update_employee' employee.id %}">Edit</a>
+                                    <a class="btn btn-success btn-sm" href="{% url 'employee_details' employee.id %}">View</a>
+                                    <a class="btn btn-danger btn-sm" href="{% url 'delete_employee' employee.id %}">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center py-3 text-secondary">
+                                No Employee found
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-3">
+                <h4 class="align-start">Designations</h4>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-start mb-0 shadow" >
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Employees</th>
+                            <th class="col">Actions</th>
+                        </tr>
+                    
+                        {% for designation in designations %}
+                        <tr>
+                            <td>{{ designation.name }}</td>
+                            <td class="text-center">
+                                {{ designation.employees_set.count }}
+                            </td>
+                            <td>
+                                <a class="btn btn-primary btn-sm" href="{% url 'edit_designation' designation.id %}">Edit</a>
+                                <a class="btn btn-danger btn-sm" href="{% url 'delete_designation' designation.id %}">Delete</a>
+                            </td>
+                        </tr>
+                        
+                        {% empty %}
+                        <tr>
+                            <td colspan="6">
+                                No Designation found
+                            </td>
+                        </tr>
+
+                        {% endfor %}
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+</div>
+{% endblock %}

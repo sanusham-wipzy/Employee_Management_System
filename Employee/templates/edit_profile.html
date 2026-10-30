@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow">
+                <div class="card-header">
+                    <h4 class="mb-0">Edit Profile</h4>
+                </div>
+
+                <div class="card-body">
+
+                    {% for message in messages %}
+                        <div class="alert alert-info">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Profile Picture</label>
+
+                            {% if employee.profile_picture %}
+                                <img src="{{ employee.profile_picture.url }}"
+                                    alt="Profile Picture"
+                                    width="100"
+                                    height="100"
+                                    class="rounded-circle mb-2 d-block">
+                            {% endif %}
+
+                            <input type="file"
+                                name="profile_picture"
+                                class="form-control"
+                                accept="image/*">
+
+                            <small class="text-muted">
+                                Maximum file size: 2 MB
+                            </small>
+
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label class="form-label">Employee ID</label>
+                            <input type="text"
+                                   class="form-control"
+                                   value="{{ employee.user_name }}"
+                                   readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Name</label>
+                            <input type="text"
+                                   name="name"
+                                   class="form-control"
+                                   value="{{ employee.name }}"
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email"
+                                   name="email"
+                                   class="form-control"
+                                   value="{{ employee.email }}"
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Phone</label>
+                            <input type="text"
+                                   name="phone"
+                                   class="form-control"
+                                   value="{{ employee.phone }}"
+                                   required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Gender</label>
+                            <div class="form-check form-check-inline">
+                                <input 
+                                type="radio" 
+                                name="gender" 
+                                id="gander_male"
+                                value="Male"
+                                class="form-check-input"
+                                {% if employee.gender == "Male" %}checked{% endif %}> 
+                                <label for="gender_male" class="form-check-label">
+                                    Male
+                                </label>                                
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input 
+                                type="radio" 
+                                name="gender" 
+                                id="gander_female"
+                                value="Female"
+                                class="form-check-input"
+                                {% if employee.gender == "Female" %}checked{% endif %}> 
+                                <label for="gender_female" class="form-check-label">
+                                    Female
+                                </label>                                
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input 
+                                type="radio" 
+                                name="gender" 
+                                id="gander_other"
+                                value="Other"
+                                class="form-check-input"
+                                {% if employee.gender == "Other" %}checked{% endif %}> 
+                                <label for="gender_other" class="form-check-label">
+                                    Other
+                                </label>                                
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            Save Changes
+                        </button>
+
+                        <a href="{% url 'employee_dashboard' %}"
+                           class="btn btn-secondary">
+                            Cancel
+                        </a>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

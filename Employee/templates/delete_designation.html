@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Employee{% endblock %}
+
+{% block content %}
+
+<div class="container min-vh-100 d-flex justify-content-center align-items-center">
+
+    <div class="card shadow p-4 text-center" style="max-width: 450px; width: 100%;">
+
+        <h3 class="text-danger mb-3">Delete Designation</h3>
+
+        <p>
+            Are you sure you want to delete
+            <strong>{{ designation.name }}</strong>?
+        </p>
+
+        <p class="text-muted">
+            This action cannot be undone.
+        </p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <button type="submit" class="btn btn-danger">
+                Yes, Delete
+            </button>
+
+            <a href="{% url 'employee_list' %}" class="btn btn-secondary">
+                Cancel
+            </a>
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

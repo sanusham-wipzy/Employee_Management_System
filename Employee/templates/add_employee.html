@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+
+
+<section class="container-fluid min-vh-100 d-flex justify-content-center align-items-center py-4">
+
+    <div class="card shadow p-4 add-form w-100">
+
+        <h3 class="text-center mb-4">
+            {% if employee %}
+                Update Employee
+            {% else %}
+                Add Employee
+            {% endif %}
+        </h3>
+
+        <form action="" method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input
+                    type="text"
+                    name="name"
+                    class="form-control"
+                    value="{{ employee.name|default:'' }}"
+                    required
+                >
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input
+                    type="email"
+                    name="email"
+                    class="form-control"
+                    value="{{ employee.email|default:'' }}"
+                    required
+                >
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="phone">Phone</label>
+                <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    class="form-control"
+                    value="{{ employee.phone|default:'' }}"
+                    required
+                >
+                <small id="phone-error" class="text-danger"></small>
+            </div>
+
+            <div class="mb-3">
+                <label for="designation" class="form-label">Designation</label>
+                <select name="designation" id="designation" class="form-select">
+                    <option value="">Select Designation</option>
+                    {% for d in designation %}
+                    <option value="{{d.id}}">{{d.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="salary">Salary</label>
+                <input
+                    type="number"
+                    id="salary"
+                    name="salary"
+                    class="form-control"
+                    value="{{ employee.salary|default:'' }}"
+                    placeholder="Enter salary"
+                    min="0.01"
+                    step="any"
+                    required
+                >
+                <small id="salary-error" class="text-danger"></small>
+            </div>
+
+            <div class="d-flex justify-content-between gap-2">
+                <button type="submit" class="btn btn-primary flex-grow-1">
+                    {% if employee %}
+                        Update Employee
+                    {% else %}
+                        Add Employee
+                    {% endif %}
+                </button>
+
+                <a href="{% url 'employee_list' %}"
+                   class="btn btn-secondary flex-grow-1">
+                    Cancel
+                </a>
+            </div>
+
+        </form>
+    </div>
+
+</section>
+
+
+
+
+{% endblock %}

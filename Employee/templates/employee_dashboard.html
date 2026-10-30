@@ -1,0 +1,49 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Employee Dashboard</h2>
+        <div>
+            <a class="btn btn-primary" href="{% url 'edit_profile' %}">
+                Edit Profile
+            </a>
+            <a class="btn btn-dark" href="{% url 'change_password' %}">
+                Change password
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-body">
+
+            {% if employee.profile_picture %}
+                <img src="{{ employee.profile_picture.url }}"
+                    alt="Profile Picture"
+                    width="120"
+                    height="120"
+                    style="object-fit: cover; border-radius: 50%;">
+            {% else %}
+                <i class="bi bi-person-circle fs-1"></i>
+            {% endif %}
+
+            <h4 class="mb-3">Welcome, {{ employee.name }}!</h4>
+
+            <p><strong>Employee ID:</strong> {{ employee.user_name }}</p>
+            <p><strong>Name:</strong> {{ employee.name }}</p>
+            <p><strong>Email:</strong> {{ employee.email }}</p>
+            <p><strong>Phone:</strong> {{ employee.phone }}</p>
+            <p><strong>Designation:</strong> {{ employee.designation.name }}</p>
+            <p><strong>Salary:</strong> {{ employee.salary }}</p>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+

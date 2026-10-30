@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<div class="container mt-5 employee-details">
+
+    <div class="card shadow p-4">
+
+        <div class="mt-3 container d-flex justify-content-between">
+
+            <h2 class="mb-4">Employee Details</h2>
+
+            <div>
+                <a href="{% url 'update_employee' employee.id %}"
+                class="btn btn-warning">Edit</a>
+
+                <a href="{% url 'employee_list' %}"
+                class="btn btn-secondary">Back</a>
+                </div>
+
+        </div>
+
+        
+
+        <p><strong>Name:</strong> {{ employee.name }}</p>
+
+        <p><strong>Email:</strong> {{ employee.email }}</p>
+
+        <p><strong>Phone:</strong> {{ employee.phone }}</p>
+
+        <p><strong>Designation:</strong> {{ employee.designation }}</p>
+
+        <p><strong>Salary:</strong> {{ employee.salary|floatformat:2 }}</p>
+
+        <p><strong>Created:</strong> {{ employee.created_at|date:"d F Y" }}</p>
+
+        <p><strong>Updated:</strong> {{ employee.updated_at|date:"d F Y" }}</p>
+
+        
+
+    </div>
+
+    {% endblock %}
+
+

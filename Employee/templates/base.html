@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+    <div class="container">
+
+        <a class="navbar-brand fw-bold" href="{% url 'employee_list' %}">
+            Employee Management
+        </a>
+
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#mainNavbar"
+                aria-controls="mainNavbar"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNavbar">
+
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                <li class="nav-item">
+                    <a class="nav-link px-3"
+                       href="{% url 'employee_list' %}">
+                        Home
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link px-3"
+                       href="{% url 'add_employee' %}">
+                        + Add Employee
+                    </a>
+                </li>
+
+                <li class="nav-item ms-lg-2">
+                    <form method="GET" action="{% url 'employee_list' %}"
+                          class="d-flex mt-2 mt-lg-0">
+                        <input type="search"
+                               name="search"
+                               class="form-control form-control-sm me-2"
+                               placeholder="Search employee..."
+                               aria-label="Search employee">
+
+                        <button type="submit"
+                                class="btn btn-outline-info btn-sm">
+                            Search
+                        </button>
+                    </form>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('#message-container .alert').forEach(function (alert) {
+        setTimeout(function () {
+            alert.style.opacity = '0';
+            alert.style.transition = 'opacity 0.5s ease';
+
+            setTimeout(function () {
+                alert.remove();
+            }, 500);
+        }, 3000);
+    });
+});
+</script>
+
+    {% if messages %}
+        <div id="message-container" class="container mt-3">
+            {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show"
+                    role="alert">
+
+                    {{ message }}
+
+                    <button type="button"
+                            class="btn-close"
+                            onclick="this.closest('.alert').remove()"
+                            aria-label="Close">
+                    </button>
+
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% block content %}
+
+    {% endblock %}
+
+    
+     
+</body>
+
+<link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.10.1/build/css/intlTelInput.css"
+>
+
+<style>
+    .iti {
+        width: 100%;
+    }
+    .employee-details{
+        width: 60%;
+    }
+    .add-form {
+        max-width: 500px;
+        border-radius: 12px;
+        background-color: #ffffff;
+    }
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.10.1/build/js/intlTelInput.min.js"></script>
+
+<script>
+    const phoneInput = document.querySelector("#phone");
+    const phoneError = document.querySelector("#phone-error");
+
+    const iti = window.intlTelInput(phoneInput, {
+        initialCountry: "in",
+        separateDialCode: true,
+        nationalMode: true,
+        validationNumberTypes: ["MOBILE"],
+        loadUtils: () =>
+            import(
+                "https://cdn.jsdelivr.net/npm/intl-tel-input@25.10.1/build/js/utils.js"
+            )
+    });
+
+    // Validate the phone number
+    phoneInput.addEventListener("input", function () {
+        phoneError.textContent = "";
+
+        if (phoneInput.value.trim() !== "" && iti.isValidNumber() === false) {
+            phoneError.textContent = "Please enter a valid phone number.";
+        }
+    });
+
+    // Validate before submitting the form
+    phoneInput.closest("form").addEventListener("submit", function (event) {
+        phoneError.textContent = "";
+
+        if (!phoneInput.value.trim()) {
+            phoneError.textContent = "Phone number is required.";
+            event.preventDefault();
+            return;
+        }
+
+        if (!iti.isValidNumber()) {
+            phoneError.textContent =
+                "Please enter a valid phone number for the selected country.";
+            event.preventDefault();
+            return;
+        }
+
+        // Save the complete international number, including country code
+        phoneInput.value = iti.getNumber();
+    });
+
+    const salaryInput = document.getElementById("salary");
+    const salaryError = document.getElementById("salary-error");
+
+    salaryInput.addEventListener("input", function () {
+        const salary = salaryInput.value.trim();
+
+        salaryError.textContent = "";
+
+        if (salary === "") {
+            return;
+        }
+
+        if (!Number.isFinite(Number(salary))) {
+            salaryError.textContent = "Please enter a valid salary.";
+        } else if (Number(salary) <= 0) {
+            salaryError.textContent =
+                "Salary must be greater than zero.";
+        }
+    });
+
+    salaryInput.closest("form").addEventListener("submit", function (event) {
+        const salary = salaryInput.value.trim();
+
+        if (
+            salary === "" ||
+            !Number.isFinite(Number(salary)) ||
+            Number(salary) <= 0
+        ) {
+            event.preventDefault();
+
+            if (salary === "") {
+                salaryError.textContent = "Please enter the salary.";
+            } else {
+                salaryError.textContent =
+                    "Please enter a valid positive salary greater than zero.";
+            }
+
+            salaryInput.focus();
+        }
+    });
+
+
+</script>
+</html>
